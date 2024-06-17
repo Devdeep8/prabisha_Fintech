@@ -1,9 +1,11 @@
-"use client"
-
-export default function Home() {
+'use client'
+import HeroSection from "@/components/hero-section";
+const HomePage = () => {
   return (
-  <>
-Ram Ram sa sa
-  </>
+    <>
+    <HeroSection/>
+    </>
   );
 }
+
+export default HomePage;

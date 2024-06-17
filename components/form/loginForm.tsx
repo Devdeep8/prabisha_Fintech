@@ -21,8 +21,8 @@ import cookies from "js-cookie";
 
 // Define the schema correctly
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  identifier: z.string().min(2, {
+    message: "Username or Email must be at least 2 characters.",
   }),
   password: z.string().min(6, {
     message: "Password must be at least 6 characters.",
@@ -53,15 +53,12 @@ export function LoginForm() {
       });
 
       const result = await response.json();
-      // console.log(result);
       if (response.ok) {
         const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour in milliseconds
-       cookies.set( "token", result.token, { expires: expires})
-      // (`${process.env.NEXT_PUBLIC_PORT}/api/protected`); // Redirect to a protected route
+        cookies.set("token", result.token, { expires: expires });
         return result;
       }
     } catch (error) {
-     
       console.error('Error:', error);
     }
   };
@@ -69,9 +66,8 @@ export function LoginForm() {
   const onSubmit = async (data: FormData) => {
     try {
       const result = await authenticate(data);
-      console.log(result);
       if (result.message === "Authenticated") {
-        router.push(`/dashboard`);
+        router.replace(`/dashboard`);
         toast({
           title: "Login Successful",
           description: "You have been successfully logged in.",
@@ -97,26 +93,26 @@ export function LoginForm() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen ">
+    <div className="flex justify-center items-center min-h-screen">
       <div className="max-w-md w-full mx-auto shadow-md rounded-lg p-6">
         <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="username"
+              name="identifier"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="">Username</FormLabel>
+                  <FormLabel className="">Username or Email</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="shadcn"
+                      placeholder="Username or Email"
                       {...field}
                       className="w-full p-2 border rounded-lg"
                     />
                   </FormControl>
                   <FormDescription className="text-gray-500 dark:text-gray-400">
-                    This is your public display name.
+                    Enter your username or email.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -155,11 +151,10 @@ export function LoginForm() {
             </Button>
           </form>
         </Form>
-        {/* {message && <p className="mt-4 text-center text-red-500">{message}</p>} */}
         <p className="my-4">
-          If you don't have account Click{" "}
+          If you don't have an account, click{" "}
           <Link
-            className="text-blue-500 hover:text-blue-800 visited:text-violet-500 underline "
+            className="text-blue-500 hover:text-blue-800 visited:text-violet-500 underline"
             href={"/signup"}
           >
             Signup

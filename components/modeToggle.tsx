@@ -21,10 +21,10 @@ export function ModeToggle() {
 
   return (
     <Button
-    variant='ghost'
+    variant='default'
       size="icon"
       onClick={toggleTheme}
-      className={theme === "dark" ? " bg-transparent text-white" : "bg-white text-black"}
+      className={theme === "dark" ? " bg-transparent text-white" : " text-black"}
     >
       {theme === "dark" ? (
         <Sun className="h-[1.2rem] w-[1.2rem] transition-all" />

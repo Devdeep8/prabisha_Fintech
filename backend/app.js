@@ -12,20 +12,20 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 8002
- 
+const port = process.env.PORT || 8100
+
 // Middleware
 app.use(cors({
   origin: 'http://localhost:3000', // replace with your client origin
-}));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-
-
-// Serve static files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
+  }));
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(cookieParser());
+  
+  
+  // Serve static files
+  app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+  
 // Nodemailer configuration
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -35,37 +35,60 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: process.env.EMAIL, // your email address to send from
     pass: process.env.EMAIL_PASSWORD // your email password
-  }
-});
-
-transporter.verify((error) => {
-  if (error) {
-    console.error('Nodemailer verification failed:', error);
-  } else {
-    console.log('Nodemailer transporter is ready');
-  }
-});
-
-const generateToken = (user) => {
-  const payload = {
-    username: user.username,
-    email: user.email,
-    role: user.role,
-  };
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
-};
-
-// Test route
-app.get('/', (req, res) => {
-  res.send('Hello from Devdeep!');
-});
-
-// Multer configuration for file upload
-const storage = multer.diskStorage({
+    }
+    });
+    
+    transporter.verify((error) => {
+      if (error) {
+        console.error('Nodemailer verification failed:', error);
+        } else {
+          console.log('Nodemailer transporter is ready');
+          }
+          });
+          
+          const generateToken = (user) => {
+            const payload = {
+              id: user.id,
+              userId: user.userId,
+              username: user.username,
+              email: user.email,
+              image: user.imagePath,
+              role: user.role,
+              Securityquestion: user.Securityquestion,
+              };
+              return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+              };
+              
+              // Test route
+              app.get('/', (req, res) => {
+                res.send('Hello from Devdeep!');
+                });
+                function generateUserId(userIdentifier) {
+                  // Generate a simple hash code
+                  let hash = 0;
+                  for (let i = 0; i < userIdentifier.length; i++) {
+                      hash = (hash * 31 + userIdentifier.charCodeAt(i)) & 0xFFFFFFFF;
+                  }
+                
+                  // Convert the hash to a positive number and get the last four digits
+                  let hashString = Math.abs(hash % 10000).toString();
+                
+                  // Pad the hash string if necessary to ensure it is four digits
+                  while (hashString.length < 4) {
+                      hashString = '0' + hashString;
+                  }
+                
+                  return `CS${hashString}`;
+                }
+                
+                // Multer configuration for file upload
+                const storage = multer.diskStorage({
   destination: async (req, file, cb) => {
     try {
       const username = req.body.username;
-      const folderPath = path.join(__dirname, 'uploads', 'users', username);
+      const userId = generateUserId(username);
+      console.log(userId);
+      const folderPath = path.join(__dirname, 'uploads', username, userId);
       await fs.mkdir(folderPath, { recursive: true });
       cb(null, folderPath);
     } catch (err) {
@@ -79,32 +102,38 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+
+
+
 // Endpoint for user signup
 app.post('/api/signup', upload.single('image'), async (req, res) => {
   try {
     const { username, email, password, Securityquestion } = req.body;
     console.log(req.body);
     const role = 'user';
-    const profileImage = req.file ? `${process.env.NEXT_PUBLIC_PORT}/uploads/users/${username}/${req.file.filename}` : null;
-
+    
     // Get a connection from the pool
     const connection = await db.getConnection();
-
+    
     // Check if the username or email already exists
     const [existingUsers] = await connection.execute(
       'SELECT * FROM users WHERE username = ? OR email = ?',
       [username, email]
-    );
-
-    if (existingUsers.length > 0) {
-      connection.release();
-      return res.status(409).json({ error: 'Username or email already exists' });
-    }
-
-    // Insert new user data into the users table
+      );
+      
+      if (existingUsers.length > 0) {
+        connection.release();
+        return res.status(409).json({ error: 'Username or email already exists' });
+        }
+        
+        // Insert new user data into the users table
+        
+        const userId = generateUserId(username);
+        const profileImage = req.file ? `${process.env.NEXT_PUBLIC_PORT}/uploads/${username}/${userId}/${req.file.filename}` : null;
+        
     await connection.execute(
-      'INSERT INTO users (username, email, password, Securityquestion, image, role) VALUES (?, ?, ?, ?, ?, ?)',
-      [username, email, password, Securityquestion, profileImage, role]
+      'INSERT INTO users ( userId, username, email, password, Securityquestion, image, role) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [ userId, username, email, password, Securityquestion, profileImage, role]
     );
 
     // Send email with user credentials
@@ -112,7 +141,7 @@ app.post('/api/signup', upload.single('image'), async (req, res) => {
       from: process.env.EMAIL,
       to: email,
       subject: 'Welcome to Our Service',
-      text: `Username: ${username}\nPassword: ${password}\nRole: ${role}`
+      text: ` UserId: ${userId}\nUsername: ${username}\nPassword: ${password}\nRole: ${role}`
     }; 
     await transporter.sendMail(mailOptions);
 
@@ -131,27 +160,30 @@ app.post('/api/signup', upload.single('image'), async (req, res) => {
 // Endpoint for user signin
 app.post('/api/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { identifier, password } = req.body; // Changed username to identifier
 
     const connection = await db.getConnection();
     const [rows] = await connection.execute(
-      'SELECT * FROM users WHERE username = ? AND password = ?',
-      [username, password]
+      'SELECT * FROM users WHERE (username = ? OR email = ?) AND password = ?',
+      [identifier, identifier, password]
     );
     connection.release();
-
+    // console.log( rows)
     if (rows.length > 0) {
       const user = {
+        id: rows[0].id,
+        imagePath : rows[0].image,
+        userId: rows[0].userId,
         username: rows[0].username,
         email: rows[0].email,
         role: rows[0].role,
+        Securityquestion: rows[0].Securityquestion,
       };
 
-      // res.cookie(token )
-      // console.log(user)
       const token = generateToken(user);
-      res.status(200).json({ message: 'Authenticated' , token : token   });
-    } else { 
+      // console.log('token', token)
+      res.status(200).json({ message: 'Authenticated', token: token });
+    } else {
       res.status(401).json({ message: 'Invalid credentials' });
     }
   } catch (error) {
@@ -160,13 +192,6 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// Protecting routes middleware
-
-
-
-
-
-// Create an instance of Express app
 
 // Endpoint for checking user role
 app.get('/api/role', ensureAuthenticated, (req, res) => {
@@ -196,7 +221,6 @@ function ensureAuthenticated(req, res, next) {
 }
 
 
-// Define Zod schemas for validation
 
 
 // In-memory storage for OTPs (in production, use a database or a more secure method)

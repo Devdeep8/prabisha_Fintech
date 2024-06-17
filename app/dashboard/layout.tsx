@@ -13,7 +13,10 @@ export default async function DashboardLayout({
 
   return (
     <>
+   
       {role === 'admin' ? admin : user}
+
+    
     </>
   );
 }
