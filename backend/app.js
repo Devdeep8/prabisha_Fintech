@@ -109,7 +109,7 @@ const upload = multer({ storage });
 app.post('/api/signup', upload.single('image'), async (req, res) => {
   try {
     const { username, email, password, Securityquestion } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     const role = 'user';
     
     // Get a connection from the pool

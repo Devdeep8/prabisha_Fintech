@@ -1,36 +1,4 @@
-
-
 /* Include the Tailwind CSS directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
-/* General styles */
-.slide-item {
-  position: relative;
-  transform: translateY(0);
-  transition: transform 0.3s ease-in-out;
-}
-
-.slick-slide:nth-child(even) .slide-item {
-  transform: translateY(10px);
-}
-
-.slick-slide:hover .slide-item {
-  transform: translateY(0) !important;
-}
-
-.slick-track {
-  display: flex;
-  align-items: center;
-}
-
-.slick-slide {
-  margin: 0 5px;
-}
-
-.slick-list {
-  padding: 0;
-  overflow: hidden;
-}

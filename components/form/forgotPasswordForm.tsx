@@ -12,7 +12,7 @@ export default function ForgotPassword() {
   const [newPassword, setNewPassword] = useState('');
   const { toast } = useToast();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
       if (step === 1) {
@@ -38,7 +38,7 @@ export default function ForgotPassword() {
           toast({
             title: "Error",
             description: data.message || "Error requesting OTP",
-            variant: "error",
+            variant: "destructive",
           });
         }
       } else if (step === 2) {
@@ -56,7 +56,7 @@ export default function ForgotPassword() {
           toast({
             title: "Error",
             description: data.message || "Invalid OTP",
-            variant: "error",
+            variant: "destructive",
           });
         }
       } else if (step === 3) {
@@ -79,7 +79,7 @@ export default function ForgotPassword() {
           toast({
             title: "Error",
             description: data.message || "Error resetting password",
-            variant: "error",
+            variant: "destructive",
           });
         }
       }
@@ -87,7 +87,7 @@ export default function ForgotPassword() {
       toast({
         title: "Error",
         description: "Error occurred",
-        variant: "error",
+        variant: "destructive",
       });
     }
   };

@@ -152,7 +152,7 @@ export function LoginForm() {
           </form>
         </Form>
         <p className="my-4">
-          If you don't have an account, click{" "}
+          If you don&apos;t have an account, click{" "}
           <Link
             className="text-blue-500 hover:text-blue-800 visited:text-violet-500 underline"
             href={"/signup"}
