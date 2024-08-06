@@ -19,5 +19,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard"], // Add paths to protect here
+  matcher: ["/dashboard" , "/dashboard/schedule-meeting" ], // Add paths to protect here
 };

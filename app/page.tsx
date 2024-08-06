@@ -1,23 +1,14 @@
 'use client'
-import HeroSection from "@/components/hero-section";
-import Marquee3D from "@/components/carsual";
-import { BentoDemo } from "@/components/aminatedbeam";
+import Link from 'next/link'
+
 const HomePage = () => {
   return (
     <> 
     <div className="">
-
-    <HeroSection/>
-    <Marquee3D/>
-      <h1 className="flex text-4xl font-semibold items-center justify-center"> Services</h1>
-    <div className="flex justify-center container items-center">
-      
-
-    <BentoDemo/>
-
+home
+    </div>
+<Link href={'/dashboard'}>Dashboard</Link>    
     
-    </div>
-    </div>
    
     </>
   );

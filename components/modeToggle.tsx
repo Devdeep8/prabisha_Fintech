@@ -21,7 +21,7 @@ export function ModeToggle() {
 
   return (
     <Button
-    variant='default'
+    variant='ghost'
       size="icon"
       onClick={toggleTheme}
       className={theme === "dark" ? " bg-transparent text-white" : " text-black"}

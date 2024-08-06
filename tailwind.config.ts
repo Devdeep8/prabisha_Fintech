@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
@@ -7,7 +7,7 @@ const config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-	],
+  ],
   prefix: "",
   theme: {
     container: {
@@ -18,49 +18,101 @@ const config = {
       },
     },
     extend: {
-      
-      colors: {
-       
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+      "colors": {
+        "border": {
+          "DEFAULT": "hsl(210, 20%, 90%)",
+          "white": "#ffffff",
+          "black": "#000000"
         },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+        "input": {
+          "DEFAULT": "hsl(0, 0%, 20%)",
+          "white": "#ffffff",
+          "black": "#000000"
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+        "ring": {
+          "DEFAULT": "hsl(0, 0%, 25%)",
+          "white": "#ffffff",
+          "black": "#000000"
         },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+        "background": {
+          "DEFAULT": "hsl(0, 0%, 100%)",
+          "white": "#ffffff",
+          "black": "#000000"
         },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+        "foreground": {
+          "DEFAULT": "hsl(210, 24%, 16%)",
+          "white": "#ffffff",
+          "black": "#000000"
         },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+        "primary": {
+          "DEFAULT": "hsl(210, 22%, 88%)",
+          "electric": "#007BFF"
         },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+        "secondary": {
+          "DEFAULT": "#00BFA6",
+          "slate": "#6C757D"
         },
+        "neutral": {
+          "light": "#F8F9FA",
+          "DEFAULT": "#FFFFFF",
+          "dark": "#343A40"
+        },
+        "success": {
+          "DEFAULT": "#28A745",
+          "foreground": "hsl(0, 0%, 100%)"
+        },
+        "error": {
+          "DEFAULT": "#FFC107",
+          "foreground": "hsl(0, 0%, 100%)"
+        },
+        "destructive": {
+          "DEFAULT": "#DC3545",
+          "foreground": "hsl(0, 0%, 100%)"
+        },
+        "info": {
+          "DEFAULT": "#17A2B8",
+          "foreground": "hsl(0, 0%, 100%)"
+        },
+        "caution": {
+          "DEFAULT": "#ffc658",
+          "foreground": "hsl(0, 0%, 100%)"
+        },
+        "muted": {
+          "DEFAULT": "hsl(210, 22%, 88%)",
+          "foreground": "hsl(210, 24%, 16%)",
+          "white": "#ffffff",
+          "black": "#000000"
+        },
+        "accent": {
+          "DEFAULT": "#66A3FF",
+          "foreground": "hsl(0, 0%, 100%)",
+          "white": "#ffffff",
+          "black": "#000000"
+        },
+        "popover": {
+          "DEFAULT": "hsl(0, 0%, 100%)",
+          "foreground": "hsl(210, 24%, 16%)",
+          "white": "#ffffff",
+          "black": "#000000"
+        },
+        "card": {
+          "DEFAULT": "hsl(255, 255, 255)"
+        }
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      keyframes: {
+        lg: "var(--radius, 0.5rem)", // default radius value
+        md: "calc(var(--radius, 0.5rem) - 2px)",
+        sm: "calc(var(--radius, 0.5rem) - 4px)",
+      }, 
+      keyframes: { 
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - var(--gap)))" },
+        },
+        "marquee-vertical": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(calc(-100% - var(--gap)))" },
+        },
         "caret-blink": {
           "0%,70%,100%": { opacity: "1" },
           "20%,50%": { opacity: "0" },
@@ -75,6 +127,8 @@ const config = {
         },
       },
       animation: {
+        marquee: "marquee var(--duration) linear infinite",
+        "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "caret-blink": "caret-blink 1.25s ease-out infinite",
         "accordion-up": "accordion-up 0.2s ease-out",
@@ -82,6 +136,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
+export default config;

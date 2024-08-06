@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -53,8 +52,9 @@ export function LoginForm() {
       });
 
       const result = await response.json();
+
       if (response.ok) {
-        const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour in milliseconds
+        const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours in milliseconds
         cookies.set("token", result.token, { expires: expires });
         return result;
       }
@@ -67,6 +67,7 @@ export function LoginForm() {
     try {
       const result = await authenticate(data);
       if (result.message === "Authenticated") {
+
         router.replace(`/dashboard`);
         toast({
           title: "Login Successful",

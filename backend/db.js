@@ -4,12 +4,12 @@ const db = mysql.createPool({
   host: 'localhost',
   user: 'root', // replace with your MySQL username
   password: '', // replace with your MySQL password
-  database: 'prabisha_services',
+  database: 'prabisha_fintech',
   waitForConnections: true,
   connectionLimit: 10, 
-  queueLimit: 0
-});
- 
+  queueLimit: 0 
+}); 
+  
 // Check if the database connection pool is successful
 db.getConnection()
   .then(connection => {

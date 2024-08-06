@@ -21,7 +21,7 @@ export async function checkUserRole(): Promise<'admin' | 'user'> {
     }
 
     const userRole = payload.role as 'admin' | 'user';
-
+    // console.log(userRole);
     return userRole;
   } catch (error) {
     console.error('Error checking user role:', error);
