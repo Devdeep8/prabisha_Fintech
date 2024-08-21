@@ -1,9 +1,9 @@
-import { unstable_noStore as noStore } from "next/cache"
 import type {
   ChartOptions,
   ChartResultArray,
 } from "@/node_modules/yahoo-finance2/dist/esm/src/modules/chart"
-import type { Interval, Range } from "@/types/yahoo-finance"
+
+import type { Interval, Range } from "@/types"
 import { DEFAULT_RANGE, INTERVALS_FOR_RANGE, VALID_RANGES } from "./constants"
 import { CalculateRange } from "@/lib/utils"
 import yahooFinance from "yahoo-finance2"
@@ -21,7 +21,6 @@ export async function fetchChartData(
   range: Range,
   interval: Interval
 ) {
-  noStore()
 
   const queryOptions: ChartOptions = {
     period1: CalculateRange(range),

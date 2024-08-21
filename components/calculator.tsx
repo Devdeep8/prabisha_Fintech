@@ -23,7 +23,7 @@ interface Expense {
   createdAt: string | number | Date;
   id: number;
   name: string;
-  amount: number;
+  amount: number ;
   category: string;
   date: string;
   userId: string;
@@ -31,7 +31,7 @@ interface Expense {
 
 interface NewExpense {
   name: string;
-  amount: string;
+  amount: string ;
   category: string;
   date: string;
 }
@@ -115,7 +115,7 @@ export default function Calculator() {
     }
   };
 
-  const totalExpenses = expenses.reduce((total, expense) => total + parseFloat(expense.amount), 0);
+  const totalExpenses = expenses.reduce((total, expense) => total + expense.amount, 0);
 
   const filteredExpenses = expenses.filter((expense) => {
     const expenseDate = new Date(expense.createdAt);
@@ -220,7 +220,7 @@ export default function Calculator() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="rounded-lg p-4">
                   <h3 className="text-lg font-bold">Total Expenses</h3>
-                  <p className="text-4xl font-bold">${totalExpenses.toFixed(2)}</p>
+                  <p className="text-4xl font-bold">${totalExpenses}</p>
                 </div>
                 <div className="rounded-lg p-4">
                   <h3 className="text-lg font-bold">Filter by Date</h3>
