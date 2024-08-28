@@ -41,7 +41,7 @@ export default function Page({ params }: any) {
         {loading ? (
           <p>Loading...</p>
         ) : (
-          <CreateProfileOne categories={[]} initialData={userData} params={params} />
+          <CreateProfileOne  initialData={userData} params={params} />
         )}
       </div>
     </ScrollArea>

@@ -32,11 +32,11 @@ export const fetchNavItems = async (): Promise<NavItem[]> => {
         {
             title: 'Calculator',
             href: '/dashboard/calculator',
-            icon: 'user',
+            icon: 'laptop',
             label: 'user'
         },
         {
-            title: 'Profile',
+            title: 'KYC',
             href: `/dashboard/profile/${username}`,
             icon: 'profile',
             label: 'profile'

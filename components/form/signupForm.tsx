@@ -208,7 +208,7 @@ export function SignUpForm() {
                 render={({ field }) => (
                   <FormItem className="col-span-2">
                     <FormLabel className="text-black dark:text-white">
-                      What is your teacher&apos;s name?
+                      What is your teacher&apos;s name? 
                     </FormLabel>
                     <FormControl>
                       <Input
