@@ -84,19 +84,25 @@ export default function Portfolio() {
     const verifyPanAndFetchData = async () => {
       try {
         const user = await verifyTokenAndReturnCookies()
-        const userId = user?.userId
-        setUserId(userId)
-        const panVerificationResult = await verificationByPan(userId)
-        if (panVerificationResult.length > 0) {
-          setIsPanVerified(true)
+  
+        // Type guard to ensure `user` is the expected object
+        if (user && typeof user.userId === "string") {
+          const userId = user.userId
+          setUserId(userId)
           
+          const panVerificationResult = await verificationByPan(userId)
+          if (panVerificationResult.length > 0) {
+            setIsPanVerified(true)
+          } else {
+            toast({
+              title: "Verification Failed",
+              description: "Your PAN could not be verified.",
+              variant: "destructive",
+              action: <ToastAction altText="Verify PAN">Verify PAN</ToastAction>,
+            })
+          }
         } else {
-          toast({
-            title: "Verification Failed",
-            description: "Your PAN could not be verified.",
-            variant: "destructive",
-            action: <ToastAction altText="Verify PAN">Verify PAN</ToastAction>,
-          })
+          throw new Error("Invalid user data")
         }
       } catch (error) {
         console.error("Error during PAN verification:", error)
@@ -108,9 +114,10 @@ export default function Portfolio() {
         })
       }
     }
-
+  
     verifyPanAndFetchData()
   }, [toast])
+  
 
   return (
     <ToastProvider>
