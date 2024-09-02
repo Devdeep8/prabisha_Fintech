@@ -8,10 +8,10 @@ import { useRouter } from "next/navigation";
 import { JSX, SVGProps } from "react"
 
 
-export default function BentoPort() {
+export default function BentoPort(className : any) {
   const router = useRouter();
    return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+    <div className={`grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 ${className}`}>
       <div className="group relative overflow-hidden rounded-lg bg-muted p-4 transition-all hover:bg-accent hover:text-accent-foreground">
         <div className="flex items-center justify-center">
           <StoreIcon className="h-10 w-10" />
