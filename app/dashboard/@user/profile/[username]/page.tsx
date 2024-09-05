@@ -51,7 +51,11 @@ export default function Page({ params }: PageProps) {
         {loading ? (
           <p>Loading...</p>
         ) : (
+<<<<<<< HEAD
           <CreateProfileOne initialData={userData} params={params} />
+=======
+          <CreateProfileOne  initialData={userData} params={params} />
+>>>>>>> db3e8ed2ee483f8ab1f4b89cd77a69665dfbdf35
         )}
       </div>
     </ScrollArea>
