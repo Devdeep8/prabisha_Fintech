@@ -1,12 +1,11 @@
 "use client"
 
 import { CellContext, ColumnDef } from "@tanstack/react-table"
-
 import type { ScreenerQuote } from "@/node_modules/yahoo-finance2/dist/esm/src/modules/screener"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 
-export const columns: ColumnDef<ScreenerQuote>[] = [
+export const columns: ColumnDef<ScreenerQuote & { quantity?: number }>[] = [
   {
     accessorKey: "symbol",
     meta: "Symbol",
@@ -69,16 +68,6 @@ export const columns: ColumnDef<ScreenerQuote>[] = [
       const { row } = props
       const price = parseFloat(row.getValue("regularMarketPrice"))
       return <div className="text-right">{price.toFixed(2)}</div>
-    },
-  },
-  {
-    accessorKey: "quantity",
-    meta: "Quantity",
-    header: () => <div className="text-right">Quantity</div>,
-    cell: (props: CellContext<ScreenerQuote, unknown>) => {
-      const { row } = props
-      const quantity = row.original.quantity
-      return <div className="text-right">{quantity !== undefined ? quantity : "N/A"}</div>
     },
   },
   {
@@ -185,6 +174,18 @@ export const columns: ColumnDef<ScreenerQuote>[] = [
       }
 
       return <div className="text-right">{formatMarketCap(marketCap)}</div>
+    },
+  },
+  // Add the new Quantity column
+  {
+    accessorKey: "quantity",
+    meta: "Quantity",
+    header: () => <div className="text-right">Quantity</div>,
+    cell: (props: CellContext<ScreenerQuote & { quantity?: number }, unknown>) => {
+      const { row } = props
+      // Assuming quantity is manually added or calculated in your logic
+      const quantity = row.original.quantity || 0 // Default to 0 if not available
+      return <div className="text-right">{quantity}</div>
     },
   },
 ]

@@ -12,43 +12,51 @@ interface KYCFormProps {
     index: number,
     e: React.ChangeEvent<HTMLInputElement>
   ) => void;
+  handleNumberChange: (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => void;
   handlePreviousStep: () => void;
   onSubmitProfile: () => void;
 }
 
-const KYCForm: React.FC<KYCFormProps> = ({
+export default function KYCForm({
   loading,
   kycStatus,
   handleFileUpload,
   handleFileChange,
+  handleNumberChange,
   handlePreviousStep,
   onSubmitProfile,
-}) => {
+}: KYCFormProps) {
   const { watch } = useFormContext();
   const defaultValues = watch("kyc") || [];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+    <div className="space-y-6">
       {defaultValues.map((kyc: any, index: number) => (
-        <div key={index} className="flex items-center space-x-4">
-          <FormLabel className="w-32">{kyc.type}</FormLabel>
-          <div className="flex items-center flex-grow">
-            <div className="flex-grow">
+        <div key={index} className="space-y-2">
+          <FormLabel>{kyc.type}</FormLabel>
+          <div className="flex items-center space-x-4">
+            <Input
+              type="number"
+              placeholder="Enter number"
+              onChange={(e) => handleNumberChange(index, e)}
+              disabled={loading}
+              className="w-24"
+            />
+            <div className="flex-grow flex items-center space-x-2">
               <Input
                 type="file"
                 onChange={(e) => handleFileChange(index, e)}
                 disabled={loading}
-                className="mb-2 w-full"
-                style={{ height: "2.5rem" }}
+                className="flex-grow"
               />
-            </div>
-            <div className="px-4">
               <Button
                 variant="outline"
                 type="button"
                 onClick={() => handleFileUpload(index)}
-                className="h-full min-w-[6rem] max-w-[10rem]"
-                style={{ fontSize: "0.75rem" }}
+                className="whitespace-nowrap"
                 disabled={
                   loading ||
                   (kycStatus &&
@@ -73,7 +81,7 @@ const KYCForm: React.FC<KYCFormProps> = ({
         </div>
       ))}
 
-      <div className="flex justify-between">
+      <div className="flex justify-between pt-6">
         <Button variant="outline" onClick={handlePreviousStep}>
           Previous
         </Button>
@@ -83,6 +91,4 @@ const KYCForm: React.FC<KYCFormProps> = ({
       </div>
     </div>
   );
-};
-
-export default KYCForm;
+}

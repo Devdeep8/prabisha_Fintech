@@ -26,21 +26,22 @@ router.post('/api/uploadKYC', upload.single('file'), async (req, res) => {
     }
 
     const filePath = `${process.env.NEXT_PUBLIC_PORT}/uploads/kycdocs/${req.file.filename}`;
-    const { userId, documentType } = req.body;
+    const { userId, documentType , documentNumber} = req.body;
+    console.log(req.body)
 
 
-    if (!userId || !documentType) {
+    if (!userId || !documentType || !documentNumber) {
       return res.status(400).json({ error: 'Missing userId or documentType' });
     }
 
     const query = `
-      INSERT INTO kyc_documents (user_id, document_type, file_path)
-      VALUES (?, ?, ?)
+      INSERT INTO kyc_documents (user_id, document_type, file_path , document_number)
+      VALUES (?, ?, ? , ?)
       ON DUPLICATE KEY UPDATE file_path = VALUES(file_path)
     `;
 
     try {
-      const [result] = await db.query(query, [userId, documentType, filePath]);
+      const [result] = await db.query(query, [userId, documentType, filePath , documentNumber]);
       res.status(200).json({ message: 'File uploaded successfully', result: result });
     } catch (dbError) {
       console.error('Error executing query:', dbError);
