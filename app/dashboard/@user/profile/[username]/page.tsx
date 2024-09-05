@@ -1,26 +1,18 @@
-'use client';
+'use client'
 import BreadCrumb from '@/components/breadcrumb';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import CreateProfileOne from '@/components/form/user-profile-stepper/create-profile';
 import { fetchUserData } from '@/utils/fetchdata';
-import { useState, useEffect } from 'react';
+import { useState , useEffect } from 'react';
 
-type PageProps = {
-  params: {
-    username: string;
-  };
-};
-
-export default function Page({ params }: PageProps) {
+export default function Page({ params }: any) {
   // Define initial state for user data
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-
-  const breadcrumbItems = [
-    { title: 'Profile', link: `/dashboard/profile/${params.username}` },
-    { title: params.username, link: `/dashboard/profile/${params.username}` },
+  const breadcrumbItems = [{ title: ` Profile `, link: `/dashboard/profile/${params.username}` },
+  { title: ` ${params.username} `, link: `/dashboard/profile/${params.username}` }
   ];
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -30,10 +22,8 @@ export default function Page({ params }: PageProps) {
           const userData = await fetchUserData(username);
           if (userData) {
             setUserData(userData);
-          } else {
-            console.error('No user data found');
           }
-        }
+        } 
       } catch (error) {
         console.error('Error fetching user data:', error);
       } finally {
@@ -51,11 +41,7 @@ export default function Page({ params }: PageProps) {
         {loading ? (
           <p>Loading...</p>
         ) : (
-<<<<<<< HEAD
-          <CreateProfileOne initialData={userData} params={params} />
-=======
           <CreateProfileOne  initialData={userData} params={params} />
->>>>>>> db3e8ed2ee483f8ab1f4b89cd77a69665dfbdf35
         )}
       </div>
     </ScrollArea>
