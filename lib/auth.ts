@@ -5,6 +5,8 @@ import { jwtVerify } from 'jose';
 export async function checkUserRole(): Promise<'admin' | 'user'> {
   // Retrieve the token from cookies
   const token = cookies().get('token')?.value;
+  const secret2 = 'SSBMb3ZlIFNvbXlh'; // Replace with your actual secret
+
 
   if (!token) {
     console.error('Token not found in cookies');
@@ -12,7 +14,7 @@ export async function checkUserRole(): Promise<'admin' | 'user'> {
   }
 
   try {
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    const secret = new TextEncoder().encode(secret2);
     const { payload } = await jwtVerify(token, secret);
     // console.log(payload)
 
