@@ -210,7 +210,7 @@ app.get('/api/decode-token', (req, res) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY); // Ensure you have a secret key
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Ensure you have a secret key
     return res.status(200).json({ user: decoded });
   } catch (error) {
     return res.status(401).json({ message: 'Token not found or invalid' });
